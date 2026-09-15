@@ -6,9 +6,9 @@ export class Map {
         const mapStrings = [
             "111111111111111",
             "100000100000001",
-            "101110101111101",
-            "101000001000101",
-            "101011111010101",
+            "100000101111101",
+            "100000001000101",
+            "100000000010101",
             "100010000010001",
             "111010000011101",
             "100000101000101",
@@ -40,10 +40,15 @@ export class Map {
 
     // Zeichnet die Map unter Berücksichtigung des Kamera-Offsets
     draw(ctx, camera) {
+        // 1. Zuerst die Kamera-Werte komplett auf glatte Pixel runden
+        const camX = Math.floor(camera.x);
+        const camY = Math.floor(camera.y);
+
         for (let y = 0; y < this.height; y++) {
             for (let x = 0; x < this.width; x++) {
-                const screenX = x * this.tileSize - camera.x;
-                const screenY = y * this.tileSize - camera.y;
+                // Bildschirm-Position mit der gerundeten Kamera berechnen
+                const screenX = x * this.tileSize - camX;
+                const screenY = y * this.tileSize - camY;
 
                 if (this.grid[y][x] === 1) {
                     ctx.fillStyle = "#443b1a"; // Wand
@@ -51,9 +56,8 @@ export class Map {
                     ctx.fillStyle = "#00c921"; // Boden
                 }
 
-                ctx.fillRect(screenX, screenY, this.tileSize, this.tileSize);
-                ctx.strokeStyle = "#333";
-                // ctx.strokeRect(screenX, screenY, this.tileSize, this.tileSize);
+                // DIE RETTUNG: +1 Pixel bei Breite und Höhe hinzufügen (Überlappung)
+                ctx.fillRect(screenX, screenY, this.tileSize + 1, this.tileSize + 1);
             }
         }
     }
