@@ -7,9 +7,45 @@ body {
     padding: 20px;
 }
 
+/* Der Container zentriert alles und hält Canvas und UI zusammen */
+.game-container {
+    position: relative;
+    width: 400px;
+    height: 400px;
+    margin: 20px auto;
+}
+
 canvas {
     border: 4px solid #444;
     background: #111;
     display: block;
-    margin: 20px auto;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+}
+
+/* Das UI-Layer legt sich exakt über das Canvas */
+#ui-layer {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    display: flex;
+    justify-content: space-between;
+    /* Verteilt HP nach links, Gold nach rechts */
+    pointer-events: none;
+    /* Klicks gehen durch das UI durch auf das Canvas */
+}
+
+/* Schickes Retro-Design für die Text-Boxen */
+.ui-box {
+    background: rgba(0, 0, 0, 0.75);
+    /* Halbtransparentes Schwarz */
+    padding: 6px 12px;
+    border: 2px solid #666;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 1px 1px 0px #000;
 }

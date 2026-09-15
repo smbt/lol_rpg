@@ -2,7 +2,8 @@ import { Input } from './Input.js';
 import { Map } from '../world/Map.js';
 import { Camera } from '../world/Camera.js';
 import { Sound } from './Sound.js';
-import { Player } from '../entities/Player.js'; // 1. NEUER IMPORT
+import { Player } from '../entities/Player.js';
+import { UI } from './UI.js'; // 1. NEUER IMPORT
 
 export class Game {
     constructor(canvasId) {
@@ -14,13 +15,23 @@ export class Game {
         this.map = new Map();
         this.camera = new Camera(this.canvas.width, this.canvas.height);
         this.sound = new Sound();
+        this.ui = new UI(); // 2. UI INITIALISIEREN
 
-        // 2. SPIELER ALS ECHTES OBJEKT INITIALISIEREN
-        this.player = new Player(1, 1);
+        this.player = new Player(9, 7);
+
+        // 3. NEU: Dem Spieler Werte geben
+        this.player.currentHP = 25;
+        this.player.maxHP = 25
+        this.player.currentEP = 1;
+        this.player.maxEP = 50;
 
         this.lerpSpeed = 0.2;
         this.lastMoveTime = 0;
         this.moveCooldown = 200;
+
+        // Einmalig das UI beim Start mit den echten Werten füttern
+        this.ui.updateHP(this.player.currentHP, this.player.maxHP);
+        this.ui.updateEP(this.player.currentEP, this.player.maxEP);
     }
 
     start() {
@@ -51,16 +62,15 @@ export class Game {
                     this.player.y = nextY;
                     this.lastMoveTime = timestamp;
                     this.sound.playStep();
+
                 }
             }
         }
 
-        // 3. VISUELLE INTERPOLATION AN PLAYER DELEGIEREN
         const targetPixelX = this.player.x * this.map.tileSize;
         const targetPixelY = this.player.y * this.map.tileSize;
         this.player.interpolate(targetPixelX, targetPixelY, this.lerpSpeed);
 
-        // Kamera folgt dem Spieler
         const playerCenterX = this.player.visualX + this.map.tileSize / 2;
         const playerCenterY = this.player.visualY + this.map.tileSize / 2;
         this.camera.x = playerCenterX - this.camera.width / 2;
@@ -69,11 +79,7 @@ export class Game {
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-        // Map zeichnen
         this.map.draw(this.ctx, this.camera);
-
-        // 4. SPIELER SICH SELBST ZEICHNEN LASSEN
         const camX = Math.floor(this.camera.x);
         const camY = Math.floor(this.camera.y);
         this.player.draw(this.ctx, camX, camY, this.map.tileSize);
