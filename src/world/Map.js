@@ -10,7 +10,7 @@ export class Map {
             "101000001000101",
             "101011111010101",
             "100010000010001",
-            "111010111011101",
+            "111010000011101",
             "100000101000101",
             "101111101110101",
             "101000000010001",
@@ -46,14 +46,14 @@ export class Map {
                 const screenY = y * this.tileSize - camera.y;
 
                 if (this.grid[y][x] === 1) {
-                    ctx.fillStyle = "#555"; // Wand
+                    ctx.fillStyle = "#443b1a"; // Wand
                 } else {
-                    ctx.fillStyle = "#222"; // Boden
+                    ctx.fillStyle = "#00c921"; // Boden
                 }
 
                 ctx.fillRect(screenX, screenY, this.tileSize, this.tileSize);
                 ctx.strokeStyle = "#333";
-                ctx.strokeRect(screenX, screenY, this.tileSize, this.tileSize);
+                // ctx.strokeRect(screenX, screenY, this.tileSize, this.tileSize);
             }
         }
     }
