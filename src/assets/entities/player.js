@@ -1,0 +1,3 @@
+const sprite = 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://w3.org" viewBox="0 0 8 8" width="40" height="40" shape-rendering="crispEdges"><rect x="2" y="1" width="4" height="2" fill="#643b0f"/><rect x="2" y="2" width="4" height="2" fill="#ffdbac"/><rect x="3" y="2" width="1" height="1" fill="#000"/><rect x="5" y="2" width="1" height="1" fill="#000"/><rect x="2" y="4" width="4" height="3" fill="#1d4ed8"/><rect x="1" y="5" width="1" height="1" fill="#ffdbac"/><rect x="6" y="5" width="1" height="1" fill="#ffdbac"/><rect x="2" y="7" width="1" height="1" fill="#374151"/><rect x="5" y="7" width="1" height="1" fill="#374151"/></svg>');
+
+export default sprite

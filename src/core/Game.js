@@ -1,7 +1,8 @@
 import { Input } from './Input.js';
 import { Map } from '../world/Map.js';
 import { Camera } from '../world/Camera.js';
-import { Sound } from './Sound.js'; // 1. NEUER IMPORT
+import { Sound } from './Sound.js';
+import { Player } from '../entities/Player.js'; // 1. NEUER IMPORT
 
 export class Game {
     constructor(canvasId) {
@@ -12,16 +13,10 @@ export class Game {
         this.input = new Input();
         this.map = new Map();
         this.camera = new Camera(this.canvas.width, this.canvas.height);
-        this.sound = new Sound(); // 2. SOUND-SYSTEM INITIALISIEREN
+        this.sound = new Sound();
 
-        // Logischer Zustand
-        this.player = { x: 1, y: 1, color: 'red' };
-
-        // Visueller Zustand
-        this.playerVisual = {
-            x: this.player.x * this.map.tileSize,
-            y: this.player.y * this.map.tileSize
-        };
+        // 2. SPIELER ALS ECHTES OBJEKT INITIALISIEREN
+        this.player = new Player(1, 1);
 
         this.lerpSpeed = 0.2;
         this.lastMoveTime = 0;
@@ -55,21 +50,19 @@ export class Game {
                     this.player.x = nextX;
                     this.player.y = nextY;
                     this.lastMoveTime = timestamp;
-
-                    // 3. SOUND ÜBER DAS NEUE MODUL ABSPIELEN
                     this.sound.playStep();
                 }
             }
         }
 
+        // 3. VISUELLE INTERPOLATION AN PLAYER DELEGIEREN
         const targetPixelX = this.player.x * this.map.tileSize;
         const targetPixelY = this.player.y * this.map.tileSize;
+        this.player.interpolate(targetPixelX, targetPixelY, this.lerpSpeed);
 
-        this.playerVisual.x += (targetPixelX - this.playerVisual.x) * this.lerpSpeed;
-        this.playerVisual.y += (targetPixelY - this.playerVisual.y) * this.lerpSpeed;
-
-        const playerCenterX = this.playerVisual.x + this.map.tileSize / 2;
-        const playerCenterY = this.playerVisual.y + this.map.tileSize / 2;
+        // Kamera folgt dem Spieler
+        const playerCenterX = this.player.visualX + this.map.tileSize / 2;
+        const playerCenterY = this.player.visualY + this.map.tileSize / 2;
         this.camera.x = playerCenterX - this.camera.width / 2;
         this.camera.y = playerCenterY - this.camera.height / 2;
     }
@@ -77,20 +70,12 @@ export class Game {
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
+        // Map zeichnen
         this.map.draw(this.ctx, this.camera);
 
+        // 4. SPIELER SICH SELBST ZEICHNEN LASSEN
         const camX = Math.floor(this.camera.x);
         const camY = Math.floor(this.camera.y);
-
-        const playerScreenX = Math.floor(this.playerVisual.x) - camX;
-        const playerScreenY = Math.floor(this.playerVisual.y) - camY;
-
-        this.ctx.fillStyle = this.player.color;
-        this.ctx.fillRect(
-            playerScreenX + 4,
-            playerScreenY + 4,
-            this.map.tileSize - 8,
-            this.map.tileSize - 8
-        );
+        this.player.draw(this.ctx, camX, camY, this.map.tileSize);
     }
 }
