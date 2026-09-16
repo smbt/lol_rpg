@@ -4,6 +4,7 @@ import { Camera } from '../world/Camera.js';
 import { Sound } from './Sound.js';
 import { Player } from '../entities/Player.js';
 import { UI } from './UI.js';
+import { constants } from './constants.js';
 
 export class Game {
     constructor(canvasId) {
@@ -17,10 +18,9 @@ export class Game {
         this.sound = new Sound();
         this.ui = new UI();
 
-        this.player = new Player(30, 30);
+        this.player = new Player(constants.player.startX, constants.player.startY);
 
         this.input.onInteraction = () => {
-            console.log("interaction")
             this.sound.startMusic();
         };
 

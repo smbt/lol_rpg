@@ -164,7 +164,6 @@ export class Input {
      * Wird gefeuert, wenn der Spieler nur kurz auf den Screen getappt hat
      */
     handleTapAction(screenX, screenY) {
-        console.log(`Einfacher Tap registriert bei Pixel-X: ${screenX}, Pixel-Y: ${screenY}`);
         if (typeof this.onTap === 'function') {
             this.onTap();
         }

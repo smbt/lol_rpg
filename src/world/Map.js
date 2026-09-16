@@ -1,12 +1,13 @@
 import { textures } from './textures.js';
+import { constants } from '../core/constants.js';
 
 export class Map {
     constructor() {
         this.tileSize = 40;
 
         // --- KONFIGURATION ---
-        this.width = 64;
-        this.height = 64;
+        this.width = 32;
+        this.height = 32;
         this.seed = 1243435;
         this.wallChance = 0.06; // Chance für Natur-Wände (ID 1)
         this.treeChance = 0.04; // Chance für Bäume (ID 2) auf der Wiese
@@ -30,20 +31,11 @@ export class Map {
         this.chestTexture.onload = () => this.texturesLoaded++;
 
 
-        // 1. Das Gras-Muster (exakt nach deiner funktionierenden Spieler-Vorlage)
         this.grassTexture.src = textures.grass;
-
-        // 2. Das Stein-Muster
         this.wallTexture.src = textures.wall;
-
         this.treeTexture.src = textures.tree;
-
-
         this.houseTexture.src = textures.house;
-
         this.chestTexture.src = textures.chest;
-
-
         this.generateProcedural();
     }
 
@@ -95,8 +87,8 @@ export class Map {
         }
 
         // 4. Sicherheitszone für den Spieler-Spawn (Kachel 1,1 bis 3,3 radikal freiräumen)
-        for (let y = 1; y <= 3; y++) {
-            for (let x = 1; x <= 3; x++) {
+        for (let y = constants.player.startY - 1; y <= constants.player.startY + 1; y++) {
+            for (let x = constants.player.startX - 1; x <= constants.player.startX + 1; x++) {
                 this.grid[y][x] = 0;
             }
         }

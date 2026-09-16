@@ -4,8 +4,6 @@ const handleFullScreenBtn = () => {
     const fullscreenBtn = document.getElementById('fullscreen-btn');
     const fullscreenIcon = document.getElementById('fullscreen-icon');
 
-    console.log("Button geladen:", fullscreenBtn);
-
     if (fullscreenBtn) {
         // Absolute Sicherheit im CSS erzwingen: Der Button MUSS Klicks annehmen
         fullscreenBtn.style.pointerEvents = 'auto';
@@ -14,8 +12,6 @@ const handleFullScreenBtn = () => {
         fullscreenBtn.addEventListener('pointerup', (e) => {
             e.stopPropagation();
             e.preventDefault(); // Verhindert Geister-Klicks auf mobilen Geräten
-
-            console.log("Fullscreen Event erfolgreich gefeuert!");
 
             // Prüfen, ob das Spiel bereits im Vollbildmodus läuft
             if (!document.fullscreenElement &&

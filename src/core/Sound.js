@@ -13,7 +13,7 @@ export class Sound {
 
         // Ein Zeiger, der sich merkt, welcher Fuß gerade dran ist
         this.currentStepIndex = 0;
-        
+
         this.musicTracks = {
             day: [
                 'src/assets/sounds/music/day/caketown.mp3',
@@ -75,8 +75,6 @@ export class Sound {
         if (this.musicPlaylist.length === 0) return;
 
         const track = this.musicPlaylist[this.currentMusicIndex];
-
-        console.log(track)
 
         this.music = new Audio(track);
         this.music.volume = 0.3;
@@ -146,6 +144,6 @@ export class Sound {
     playHit() {
         const audio = new Audio('src/assets/sounds/hit30.mp3.flac');
         audio.volume = 0.5; // Lautstärke optional anpassen
-        audio.play().catch(err => console.log("Audio Autoplay Blockade:", err));
+        audio.play().catch(err => console.error("Audio Autoplay Blockade:", err));
     }
 }
