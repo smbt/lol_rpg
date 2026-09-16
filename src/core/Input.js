@@ -17,11 +17,18 @@ export class Input {
 
         this.initKeyboard();
         this.initTouch();
+
+        this.onInteraction = null;
     }
 
     initKeyboard() {
         window.addEventListener('keydown', (e) => {
             this.keys[e.key] = true;
+
+            if (typeof this.onInteraction === 'function') {
+                this.onInteraction();
+            }
+
             if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' '].includes(e.key)) {
                 e.preventDefault();
             }
@@ -40,6 +47,8 @@ export class Input {
 
         // Lausche auf JEDEN neuen Touch auf dem Bildschirm
         window.addEventListener('touchstart', (e) => {
+
+
             // Wir gehen alle neu hinzugekommenen Touch-Punkte durch
             for (const touch of e.changedTouches) {
 
@@ -105,6 +114,13 @@ export class Input {
         }, { passive: false });
 
         window.addEventListener('touchend', (e) => {
+
+
+            if (typeof this.onInteraction === 'function') {
+                this.onInteraction();
+            }
+
+
             // Wir prüfen, welche Finger gerade vom Bildschirm abgehoben wurden
             for (const touch of e.changedTouches) {
 

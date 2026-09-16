@@ -19,6 +19,11 @@ export class Game {
 
         this.player = new Player(30, 30);
 
+        this.input.onInteraction = () => {
+            console.log("interaction")
+            this.sound.startMusic();
+        };
+
         // 3. NEU: Dem Spieler Werte geben
         this.player.currentHP = 25;
         this.player.maxHP = 25

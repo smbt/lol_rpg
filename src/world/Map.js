@@ -7,7 +7,7 @@ export class Map {
         // --- KONFIGURATION ---
         this.width = 64;
         this.height = 64;
-        this.seed = 124345;
+        this.seed = 1243435;
         this.wallChance = 0.06; // Chance für Natur-Wände (ID 1)
         this.treeChance = 0.04; // Chance für Bäume (ID 2) auf der Wiese
         // ---------------------
