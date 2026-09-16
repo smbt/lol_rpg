@@ -60,10 +60,10 @@ export class Game {
             let dx = 0;
             let dy = 0;
 
-            if (this.input.isPressed('ArrowUp') || this.input.isPressed('w')) dy = -1;
-            if (this.input.isPressed('ArrowDown') || this.input.isPressed('s')) dy = 1;
-            if (this.input.isPressed('ArrowLeft') || this.input.isPressed('a')) dx = -1;
-            if (this.input.isPressed('ArrowRight') || this.input.isPressed('d')) dx = 1;
+            if (this.input.isPressed('up')) dy = -1;
+            if (this.input.isPressed('down')) dy = 1;
+            if (this.input.isPressed('left')) dx = -1;
+            if (this.input.isPressed('right')) dx = 1;
 
             if (dx !== 0 || dy !== 0) {
                 const nextX = this.player.x + dx;
