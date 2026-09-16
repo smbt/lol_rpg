@@ -33,4 +33,10 @@ export class Sound {
         // Index wechseln (Aus 0 wird 1, aus 1 wird 0)
         this.currentStepIndex = (this.currentStepIndex + 1) % this.grassSteps.length;
     }
+
+    playHit() {
+        const audio = new Audio('src/assets/sounds/hit30.mp3.flac');
+        audio.volume = 0.5; // Lautstärke optional anpassen
+        audio.play().catch(err => console.log("Audio Autoplay Blockade:", err));
+    }
 }

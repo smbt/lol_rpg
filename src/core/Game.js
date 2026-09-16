@@ -32,6 +32,10 @@ export class Game {
         // Einmalig das UI beim Start mit den echten Werten füttern
         this.ui.updateHP(this.player.currentHP, this.player.maxHP);
         this.ui.updateEP(this.player.currentEP, this.player.maxEP);
+
+        this.input.onTap = () => {
+            this.sound.playHit();
+        };
     }
 
     handleResize(newWidth, newHeight) {
@@ -74,7 +78,6 @@ export class Game {
                     this.player.y = nextY;
                     this.lastMoveTime = timestamp;
                     this.sound.playStep();
-
                 }
             }
         }
