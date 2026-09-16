@@ -3,7 +3,7 @@ import { Map } from '../world/Map.js';
 import { Camera } from '../world/Camera.js';
 import { Sound } from './Sound.js';
 import { Player } from '../entities/Player.js';
-import { UI } from './UI.js'; // 1. NEUER IMPORT
+import { UI } from './UI.js';
 
 export class Game {
     constructor(canvasId) {
@@ -15,7 +15,7 @@ export class Game {
         this.map = new Map();
         this.camera = new Camera(this.canvas.width, this.canvas.height);
         this.sound = new Sound();
-        this.ui = new UI(); // 2. UI INITIALISIEREN
+        this.ui = new UI();
 
         this.player = new Player(30, 30);
 
