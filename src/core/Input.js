@@ -33,52 +33,60 @@ export class Input {
     }
 
     initTouch() {
-        // Timer für die Unterscheidung zwischen Tap und Hold
+        // Steuerung für das D-Pad (Bewegung)
+        this.moveTouchId = null;
         this.touchTimer = null;
         this.isHoldMode = false;
 
+        // Lausche auf JEDEN neuen Touch auf dem Bildschirm
         window.addEventListener('touchstart', (e) => {
-            if (this.touchId !== null) return;
+            // Wir gehen alle neu hinzugekommenen Touch-Punkte durch
+            for (const touch of e.changedTouches) {
 
-            const touch = e.changedTouches[0];
+                // UI-Buttons (wie Fullscreen) ignorieren
+                if (touch.target.closest('#ui-layer') && ['BUTTON', 'A'].includes(touch.target.tagName)) continue;
 
-            if (e.target.closest('#ui-layer') && ['BUTTON', 'A'].includes(e.target.tagName)) return;
+                e.preventDefault();
 
-            // Browser-Standardverhalten für Gesten blockieren
-            e.preventDefault();
+                // FALL 1: Es läuft noch keine Bewegung, das ist der Primär-Touch fürs D-Pad
+                if (this.moveTouchId === null) {
+                    this.moveTouchId = touch.identifier;
+                    this.startX = touch.clientX;
+                    this.startY = touch.clientY;
+                    this.isHoldMode = false;
 
-            this.touchId = touch.identifier;
-            this.startX = touch.clientX;
-            this.startY = touch.clientY;
-            this.isHoldMode = false;
-
-            // Starte einen Timer: Wenn der Finger 150ms verbleibt, aktiviere das D-Pad
-            this.touchTimer = setTimeout(() => {
-                this.isHoldMode = true;
-                this.showJoystick(this.startX, this.startY);
-            }, 150); // Zeitfenster in Millisekunden
-
+                    // Timer für Hold-Erkennung starten
+                    this.touchTimer = setTimeout(() => {
+                        this.isHoldMode = true;
+                        this.showJoystick(this.startX, this.startY);
+                    }, 150);
+                }
+                // FALL 2: Der Spieler läuft bereits (moveTouchId besetzt) und tapt mit einem ZWEITEN Finger
+                else {
+                    // Ein Multitouch-Angriff während des Laufens!
+                    this.handleTapAction(touch.clientX, touch.clientY);
+                }
+            }
         }, { passive: false });
 
         window.addEventListener('touchmove', (e) => {
-            if (this.touchId === null) return;
+            if (this.moveTouchId === null) return;
             e.preventDefault();
 
-            const touch = Array.from(e.touches).find(t => t.identifier === this.touchId);
-            if (!touch) return;
+            // Suche gezielt nach dem Touch-Point, der für die Bewegung zuständig ist
+            const moveTouch = Array.from(e.touches).find(t => t.identifier === this.moveTouchId);
+            if (!moveTouch) return;
 
-            const dx = touch.clientX - this.startX;
-            const dy = touch.clientY - this.startY;
+            const dx = moveTouch.clientX - this.startX;
+            const dy = moveTouch.clientY - this.startY;
 
-            // Falls sich der Finger vor Ablauf der 150ms signifikant bewegt, 
-            // erzwingen wir sofort den Hold/Drag-Modus (Spieler wischt direkt los)
+            // Schnelles Wischen aktiviert sofort das D-Pad
             if (!this.isHoldMode && (Math.abs(dx) > this.threshold || Math.abs(dy) > this.threshold)) {
                 clearTimeout(this.touchTimer);
                 this.isHoldMode = true;
                 this.showJoystick(this.startX, this.startY);
             }
 
-            // Richtungsverarbeitung nur im Hold-Modus
             if (this.isHoldMode) {
                 const angle = Math.atan2(dy, dx);
                 const distance = Math.min(Math.hypot(dx, dy), 40);
@@ -97,28 +105,33 @@ export class Input {
         }, { passive: false });
 
         window.addEventListener('touchend', (e) => {
-            const touch = Array.from(e.changedTouches).find(t => t.identifier === this.touchId);
-            if (!touch) return;
+            // Wir prüfen, welche Finger gerade vom Bildschirm abgehoben wurden
+            for (const touch of e.changedTouches) {
 
-            // Timer stoppen, falls der Finger vor den 150ms angehoben wurde
-            clearTimeout(this.touchTimer);
+                // Wenn der Bewegungs-Finger abgehoben wurde, stoppe das D-Pad
+                if (touch.identifier === this.moveTouchId) {
+                    clearTimeout(this.touchTimer);
 
-            // AUSWERTUNG: War es ein einfacher Tap?
-            if (!this.isHoldMode) {
-                this.handleTapAction(this.startX, this.startY);
+                    // Wenn er sich bis zum Loslassen nicht in den Hold-Modus bewegt hat, war es ein Solo-Tap
+                    if (!this.isHoldMode) {
+                        this.handleTapAction(this.startX, this.startY);
+                    }
+
+                    // Bewegung zurücksetzen
+                    this.moveTouchId = null;
+                    this.virtualDpad.up = false;
+                    this.virtualDpad.down = false;
+                    this.virtualDpad.left = false;
+                    this.virtualDpad.right = false;
+
+                    if (this.joyBase) this.joyBase.style.display = 'none';
+                    if (this.joyKnob) this.joyKnob.style.transform = 'translate(-50%, -50%)';
+                }
+                // Hinweis: Zweit-Taps (Angriffe im Laufen) haben ihr Event bereits im 'touchstart' gefeuert
             }
-
-            // Reset für den nächsten Touch
-            this.touchId = null;
-            this.virtualDpad.up = false;
-            this.virtualDpad.down = false;
-            this.virtualDpad.left = false;
-            this.virtualDpad.right = false;
-
-            if (this.joyBase) this.joyBase.style.display = 'none';
-            if (this.joyKnob) this.joyKnob.style.transform = 'translate(-50%, -50%)';
         });
     }
+
 
     /**
      * Hilfsmethode zum Einblenden und Platzieren des Steuerkreuzes
