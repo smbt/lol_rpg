@@ -17,7 +17,7 @@ export class Game {
         this.sound = new Sound();
         this.ui = new UI(); // 2. UI INITIALISIEREN
 
-        this.player = new Player(9, 7);
+        this.player = new Player(30, 30);
 
         // 3. NEU: Dem Spieler Werte geben
         this.player.currentHP = 25;
@@ -32,6 +32,18 @@ export class Game {
         // Einmalig das UI beim Start mit den echten Werten füttern
         this.ui.updateHP(this.player.currentHP, this.player.maxHP);
         this.ui.updateEP(this.player.currentEP, this.player.maxEP);
+    }
+
+    handleResize(newWidth, newHeight) {
+        if (!this.map || !this.camera) return;
+
+        const gewuenschteKachelnBreite = newWidth > newHeight ? 30 : 10;
+        const dynamischeTileSize = Math.ceil(newWidth / gewuenschteKachelnBreite);
+        this.map.tileSize = dynamischeTileSize;
+        this.tileSize = dynamischeTileSize;
+        this.camera.width = newWidth;
+        this.camera.height = newHeight;
+        this.draw();
     }
 
     start() {
