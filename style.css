@@ -64,6 +64,11 @@
      /* Ein dezenter Schatten für mehr Tiefenwirkung */
  }
 
+ #hp-bar-container,
+ #ep-bar-container {
+     display: none;
+ }
+
  .bar-fill {
      height: 100%;
      transition: width 0.2s ease-out;
