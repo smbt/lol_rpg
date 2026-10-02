@@ -75,6 +75,12 @@ export class Game {
             if (this.input.isPressed('right')) dx = 1;
 
             if (dx !== 0 || dy !== 0) {
+
+                if (dx === 1) this.player.facingDirection = 'right';
+                if (dx === -1) this.player.facingDirection = 'left';
+                if (dy === 1) this.player.facingDirection = 'down';
+                if (dy === -1) this.player.facingDirection = 'up';
+
                 const nextX = this.player.x + dx;
                 const nextY = this.player.y + dy;
 

@@ -21,6 +21,9 @@ export class Player {
             console.error("Fehler beim Laden des Spieler-SVGs unter: " + this.sprite.src);
         };
 
+        this.facingDirection = null;
+
+
         // Dein genutzter Pfad
         this.sprite.src = 'data:image/svg+xml;utf8,' + encodeURIComponent(`
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 8" width="40" height="40" shape-rendering="crispEdges">
