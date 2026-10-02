@@ -1,8 +1,13 @@
+# Core
+
+Zentrale Systeme des Spiels. Das Core-Modul enthält die Spielsteuerung, Eingabeverarbeitung, Audioverwaltung und UI-Anbindung.
+
+
 # Game.js (Klasse)
 
-Zentrale Steuerung des Spiels. Initialisiert die Spielsysteme,
-verwaltet den Game Loop, verarbeitet Eingaben, aktualisiert den
-Spielzustand und zeichnet die aktuelle Spielsituation.
+Zentrale Steuerung des Spiels. Initialisiert die Spielsysteme, verwaltet den Game Loop, verarbeitet Eingaben, aktualisiert den Spielzustand und zeichnet die aktuelle Spielsituation.
+
+Zeilen: 82, Imports: 7, Attribute: 11, Funktionen: 4
 
 ## Imports
 
@@ -14,8 +19,7 @@ Spielzustand und zeichnet die aktuelle Spielsituation.
 
 ## Attribute
 
-`canvas`, `ctx`, `input`, `map`, `camera`, `sound`, `ui`, `player`,
-`lerpSpeed`, `lastMoveTime`, `moveCooldown`
+`canvas`, `ctx`, `input`, `map`, `camera`, `sound`, `ui`, `player`, `lerpSpeed`, `lastMoveTime`, `moveCooldown`
 
 ## Funktionen
 
@@ -25,10 +29,11 @@ Spielzustand und zeichnet die aktuelle Spielsituation.
 - `draw()` → `void`
 
 
-
 # Input.js (Klasse)
 
 Verarbeitet Tastatur- und Touch-Eingaben und stellt eine einheitliche Schnittstelle für die Spiellogik bereit.
+
+Zeilen: 126, Imports: 0, Attribute: 13, Funktionen: 5
 
 ## Konstruktor
 
@@ -36,7 +41,7 @@ Verarbeitet Tastatur- und Touch-Eingaben und stellt eine einheitliche Schnittste
 
 ## Attribute
 
-`keys`, `virtualDpad`, `touchId`, `startX`, `startY`, `threshold`, `joyBase`, `joyKnob`, `moveTouchId`, `touchTimer`, `isHoldMode`, `onInteraction`
+`keys`, `virtualDpad`, `touchId`, `startX`, `startY`, `threshold`, `joyBase`, `joyKnob`, `moveTouchId`, `touchTimer`, `isHoldMode`, `onInteraction`, `onTap`
 
 ## Funktionen
 
@@ -50,6 +55,8 @@ Verarbeitet Tastatur- und Touch-Eingaben und stellt eine einheitliche Schnittste
 # Sound.js (Klasse)
 
 Verwaltet Schritt- und Treffergeräusche sowie die Hintergrundmusik und deren Wiedergabe-Kontext.
+
+Zeilen: 91, Imports: 0, Attribute: 8, Funktionen: 6
 
 ## Konstruktor
 
@@ -72,6 +79,8 @@ Verwaltet Schritt- und Treffergeräusche sowie die Hintergrundmusik und deren Wi
 # UI.js (Klasse)
 
 Verwaltet die Anzeige von Spielerwerten im HTML-UI, aktuell HP und EP.
+
+Zeilen: 17, Imports: 0, Attribute: 2, Funktionen: 2
 
 ## Konstruktor
 
