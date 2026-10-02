@@ -6,11 +6,11 @@ export class Map {
         this.tileSize = 40;
 
         // --- KONFIGURATION ---
-        this.width = 64;
-        this.height = 64;
-        this.seed = 124345;
-        this.wallChance = 0.06;
-        this.treeChance = 0.04;
+        this.width = Math.floor(Math.random() * (128 - 16 + 1)) + 16;
+        this.height = Math.floor(Math.random() * (128 - 16 + 1)) + 16;
+        this.seed = Math.floor(Math.random() * 4294967296);
+        this.wallChance = 0.06 + (Math.random() * 0.04 - 0.02);
+        this.treeChance = 0.04 + (Math.random() * 0.04 - 0.02);
         // ---------------------
 
         this.rngState = this.seed;
@@ -105,7 +105,7 @@ export class Map {
                         type: 'tree',
                         x,
                         y,
-                        hp: 10
+                        hp: 5
                     });
                 }
             }
