@@ -6,11 +6,18 @@ export class Map {
         this.tileSize = 40;
 
         // --- KONFIGURATION ---
-        this.width = Math.floor(Math.random() * (128 - 16 + 1)) + 16;
-        this.height = Math.floor(Math.random() * (128 - 16 + 1)) + 16;
+
+
         this.seed = Math.floor(Math.random() * 4294967296);
-        this.wallChance = 0.06 + (Math.random() * 0.04 - 0.02);
-        this.treeChance = 0.04 + (Math.random() * 0.04 - 0.02);
+        console.log("Seed:", this.seed);
+
+        this.rngState = this.seed;
+
+        this.width = Math.floor(this.random() * (128 - 16 + 1)) + 16;
+        this.height = Math.floor(this.random() * (128 - 16 + 1)) + 16;
+        this.wallChance = 0.06 + (this.random() * 0.04 - 0.02);
+        this.treeChance = 0.04 + (this.random() * 0.04 - 0.02);
+
         // ---------------------
 
         this.rngState = this.seed;
