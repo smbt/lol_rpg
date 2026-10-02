@@ -104,7 +104,8 @@ export class Map {
                     this.addObject({
                         type: 'tree',
                         x,
-                        y
+                        y,
+                        hp: 10
                     });
                 }
             }

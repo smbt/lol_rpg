@@ -40,6 +40,7 @@ export class Game {
 
         this.input.onTap = () => {
             this.sound.playHit();
+            this.attack();
         };
     }
 
@@ -81,6 +82,8 @@ export class Game {
                 if (dy === 1) this.player.facingDirection = 'down';
                 if (dy === -1) this.player.facingDirection = 'up';
 
+                console.log(this.player.facingDirection);
+
                 const nextX = this.player.x + dx;
                 const nextY = this.player.y + dy;
 
@@ -109,5 +112,30 @@ export class Game {
         const camX = Math.floor(this.camera.x);
         const camY = Math.floor(this.camera.y);
         this.player.draw(this.ctx, camX, camY, this.map.tileSize);
+    }
+
+
+    attack() {
+        let targetX = this.player.x;
+        let targetY = this.player.y;
+
+        if (this.player.facingDirection === 'up') targetY--;
+        if (this.player.facingDirection === 'down') targetY++;
+        if (this.player.facingDirection === 'left') targetX--;
+        if (this.player.facingDirection === 'right') targetX++;
+
+        const target = this.map.getObjectAt(targetX, targetY);
+
+        console.log(target)
+
+        if (target && target.hp !== undefined) {
+            target.hp--;
+
+            console.log('Target getroffen. HP:', target.hp);
+
+            if (target.hp <= 0) {
+                this.map.removeObject(target);
+            }
+        }
     }
 }

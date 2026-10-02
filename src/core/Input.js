@@ -25,6 +25,10 @@ export class Input {
         window.addEventListener('keydown', (e) => {
             this.keys[e.key] = true;
 
+            if (e.key === 'Control') {
+                this.onTap();
+            }
+
             if (typeof this.onInteraction === 'function') {
                 this.onInteraction();
             }
@@ -36,6 +40,12 @@ export class Input {
 
         window.addEventListener('keyup', (e) => {
             this.keys[e.key] = false;
+        });
+
+        window.addEventListener('mousedown', (e) => {
+            if (e.button === 0) {
+                this.onTap();
+            }
         });
     }
 
